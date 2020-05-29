@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::prefix('v1')->group(function () {
-    Route::get('send', 'Controller@send');
+Route::group(['prefix' => 'v1','namespace' => 'Api'],function () {
+    Route::post('verificationCodes', 'VerificationCodesController@store')->name('api.verificationCodes.store');
 });

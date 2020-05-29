@@ -10,7 +10,7 @@ use AlibabaCloud\Client\Exception\ServerException;
 
 class SmsService
 {
-    public static function sendMessages($PhoneNumbers = 18523269519)
+    public function sendMessages($phoneNumbers, $code)
     {
         AlibabaCloud::accessKeyClient(env('ACCESS_KEY_ID'), env('ACCESS_SECRET'))
             ->regionId('cn-hangzhou')
@@ -28,9 +28,9 @@ class SmsService
                     'query' => [
                         'RegionId' => "cn-hangzhou",
                         'SignName' => "Yolver",
-                        'PhoneNumbers' => $PhoneNumbers,
+                        'PhoneNumbers' => $phoneNumbers,
                         'TemplateCode' => "SMS_191800365",
-                        'TemplateParam' => json_encode(['code'=>mt_rand(100000,999999)]),
+                        'TemplateParam' => json_encode(['code'=> $code]),
                     ],
                 ])
                 ->request();
