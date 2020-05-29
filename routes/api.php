@@ -15,4 +15,5 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1','namespace' => 'Api'],function () {
     Route::post('verificationCodes', 'VerificationCodesController@store')->name('api.verificationCodes.store');
+    Route::post('users', 'UsersController@store')->name('api.users.store');
 });
