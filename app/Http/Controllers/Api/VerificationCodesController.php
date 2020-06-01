@@ -12,7 +12,21 @@ class VerificationCodesController extends Controller
 {
     public function store(VerificationCodeRequest $request)
     {
-        $phoneNumbers = $request->phone;
+        $captchaData = Cache::get($request->captcha_key);
+        if (!$captchaData){
+            return response()->json([
+                'message' => '图片验证码已失效'
+            ], 422);
+        }
+
+        if (!hash_equals($captchaData['code'],$request->captcha_code)){
+            Cache::forget($request->captcha_key);
+            return response()->json([
+                'message' => '验证码错误'
+            ], 401);
+        }
+
+        $phoneNumbers = $captchaData['phone'];
 
         if (!app()->environment('production')){
             $code = '123456';
@@ -27,6 +41,8 @@ class VerificationCodesController extends Controller
         $expiredAt = now()->addMinutes(10);
 
         Cache::put($key, ['phone' => $phoneNumbers, 'code' => $code], $expiredAt);
+
+        Cache::forget($request->captcha_key);
 
         return response()->json([
             'key' => $key,

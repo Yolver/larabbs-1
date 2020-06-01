@@ -13,7 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => 'v1', 'namespace' => 'Api','middleware' => 'throttle:1'], function () {
+Route::group(['prefix' => 'v1', 'namespace' => 'Api','middleware' => 'throttle:5'], function () {
     Route::post('verificationCodes', 'VerificationCodesController@store')->name('api.verificationCodes.store');
     Route::post('users', 'UsersController@store')->name('api.users.store');
+    Route::post('captchas', 'CaptchasController@store')->name('api.captchas.store');
 });
